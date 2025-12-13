@@ -66,7 +66,9 @@ app.post("/api/auth/login", (req, res) => {
 
 module.exports = app;
 app.listen(5000, () => console.log("Server running"));
-// AUTH MIDDLEWARE
+
+
+// AUTHENTICATION MIDDLEWARE
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "Token missing" });
@@ -79,7 +81,9 @@ const authenticate = (req, res, next) => {
   });
 };
 
-// SWEETS CRUD
+// SWEETS CRUD APIs
+
+// ADD SWEEETS
 app.post("/api/sweets", authenticate, (req, res) => {
   const { name, category, price, quantity } = req.body;
 
@@ -89,7 +93,7 @@ app.post("/api/sweets", authenticate, (req, res) => {
     () => res.status(201).json({ message: "Sweet added" })
   );
 });
-
+// GET ALL SWEETS
 app.get("/api/sweets", authenticate, (req, res) => {
   db.query("SELECT * FROM sweets", (err, rows) => res.json(rows));
 });
