@@ -178,4 +178,37 @@ app.delete("/api/sweets/:id", auth, checkAdmin, (req,res)=>{
     })
 })
 
+app.post("/api/sweets/:id/purchase", authenticate, (req, res) => {
+  const id = req.params.id;
+
+  db.query("SELECT quantity FROM sweets WHERE id=?", [id], (err, rows) => {
+    if (rows.length === 0) return res.status(404).json({ message: "Not found" });
+
+    const qty = rows[0].quantity;
+
+    if (qty <= 0) return res.status(400).json({ message: "Out of stock" });
+
+    db.query("UPDATE sweets SET quantity = quantity - 1 WHERE id=?", [id]);
+    res.json({ message: "Purchased" });
+  });
+});
+
+const isAdmin = (req, res, next) => {
+  if (req.user.role !== "admin")
+    return res.status(403).json({ message: "Admin only" });
+  next();
+};
+
+app.post("/api/sweets/:id/restock", authenticate, isAdmin, (req, res) => {
+  const id = req.params.id;
+  const { amount } = req.body;
+
+  db.query(
+    "UPDATE sweets SET quantity = quantity + ? WHERE id=?",
+    [amount, id],
+    () => res.json({ message: "Restocked" })
+  );
+});
+
+
 
