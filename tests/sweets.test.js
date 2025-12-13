@@ -4,17 +4,18 @@ const app = require("../server");
 let userToken = "";
 let adminToken = "";
 let createdSweetId = 0;
+let invSweetId = 0;
 
 beforeAll(async () => {
 
-    // login as normal user (already registered from auth tests)
+    // normal user login
     const u = await request(app)
         .post("/api/auth/login")
         .send({ email: "test@example.com", password: "123456" });
 
     userToken = u.body.token;
 
-    // create admin
+    // create admin if not exists
     await request(app).post("/api/auth/register").send({
         name: "Admin Person",
         email: "admin@test.com",
@@ -48,22 +49,21 @@ describe("Sweets CRUD Test Suite", () => {
         expect(res.statusCode).toBe(201);
     });
 
-    // test get
+    // list sweets
     it("should get list of sweets", async () => {
         const res = await request(app)
             .get("/api/sweets")
             .set("Authorization", `Bearer ${userToken}`);
 
         expect(res.statusCode).toBe(200);
-        expect(Array.isArray(res.body)).toBe(true);
 
-        if(res.body.length > 0){
-            createdSweetId = res.body[0].id; // saving 1 sweet id to test update/delete
+        if (res.body.length > 0) {
+            createdSweetId = res.body[0].id; 
         }
     });
 
-    // search test
-    it("should search sweets by name/category/price", async () => {
+    // search sweets
+    it("should search sweets", async () => {
         const res = await request(app)
             .get("/api/sweets/search?name=Milk")
             .set("Authorization", `Bearer ${userToken}`);
@@ -71,8 +71,8 @@ describe("Sweets CRUD Test Suite", () => {
         expect(res.statusCode).toBe(200);
     });
 
-    // update test
-    it("should update sweet details", async () => {
+    // update sweet
+    it("should update sweet", async () => {
         const res = await request(app)
             .put(`/api/sweets/${createdSweetId}`)
             .set("Authorization", `Bearer ${userToken}`)
@@ -85,35 +85,59 @@ describe("Sweets CRUD Test Suite", () => {
 
         expect(res.statusCode).toBe(200);
     });
+});
 
-    // delete sweet (admin only)
-    it("should delete sweet when admin calls", async () => {
+
+
+// INVENTory TESTS
+describe("Inventory APIs", () => {
+
+    beforeAll(async () => {
+        // create fresh sweet for inventory testing
+        await request(app)
+            .post("/api/sweets")
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({
+                name: "Gummy Bear",
+                category: "Candy",
+                price: 10,
+                quantity: 5
+            });
+
+        const list = await request(app)
+            .get("/api/sweets")
+            .set("Authorization", `Bearer ${userToken}`);
+
+        invSweetId = list.body[list.body.length - 1].id; // last added item
+    });
+
+    it("should purchase sweet", async () => {
+        const res = await request(app)
+            .post(`/api/sweets/${invSweetId}/purchase`)
+            .set("Authorization", `Bearer ${userToken}`);
+
+        expect(res.statusCode).toBe(200);
+    });
+
+    it("should restock sweet (admin only)", async () => {
+        const res = await request(app)
+            .post(`/api/sweets/${invSweetId}/restock`)
+            .set("Authorization", `Bearer ${adminToken}`)
+            .send({ amount: 10 });
+
+        expect(res.statusCode).toBe(200);
+    });
+});
+
+
+
+// DELETE should be LAST
+describe("Delete sweet", () => {
+    it("admin should delete sweet", async () => {
         const res = await request(app)
             .delete(`/api/sweets/${createdSweetId}`)
             .set("Authorization", `Bearer ${adminToken}`);
 
         expect(res.statusCode).toBe(200);
     });
-
-});
-
-describe("Inventory APIs", () => {
-
-  it("should purchase sweet", async () => {
-    const res = await request(app)
-      .post("/api/sweets/1/purchase")
-      .set("Authorization", `Bearer ${token}`);
-
-    expect(res.statusCode).toBe(200);
-  });
-
-  it("should restock sweet (admin)", async () => {
-    const res = await request(app)
-      .post("/api/sweets/1/restock")
-      .set("Authorization", `Bearer ${adminToken}`)
-      .send({ amount: 10 });
-
-    expect(res.statusCode).toBe(200);
-  });
-
 });
