@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 // DATABASE
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -23,6 +24,8 @@ db.connect((err) => {
 });
 
 // Auth
+
+// Register code
 app.post("/api/auth/register", async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -38,7 +41,9 @@ app.post("/api/auth/register", async (req, res) => {
     );
   });
 });
-// login
+
+
+// login code
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
 
@@ -60,5 +65,4 @@ app.post("/api/auth/login", (req, res) => {
 });
 
 module.exports = app;
-
 app.listen(5000, () => console.log("Server running"));
