@@ -80,30 +80,36 @@ app.post("/api/auth/register", async (req,res)=>{
 
 
 // login
-app.post("/api/auth/login",(req,res)=>{
-  const {email,password} = req.body;
+app.post("/api/auth/login", (req, res) => {
+  const { email, password } = req.body;
 
-  db.query("SELECT * FROM users WHERE email=?", [email], async (err,rows)=>{
-    if(rows.length===0){
-      return res.status(401).json({message:"Invalid credentials"});
+  db.query("SELECT * FROM users WHERE email=?", [email], async (err, rows) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: "db error" });
+    }
+
+    if (!rows || rows.length === 0) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const user = rows[0];
     const valid = await bcrypt.compare(password, user.password);
 
-    if(!valid){
-      return res.status(401).json({message:"Invalid credentials"});
+    if (!valid) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
-      {id:user.id , role:user.role},
+      { id: user.id, role: user.role },
       process.env.JWT_SECRET,
-      {expiresIn:"1h"}
+      { expiresIn: "1h" }
     );
 
-    res.json({token, role:user.role});
+    res.json({ token, role: user.role });
   });
 });
+
 
 
 
@@ -246,10 +252,11 @@ app.post("/api/sweets/:id/restock", auth, isAdmin, (req,res)=>{
 
 
 // exporting app for tests
-module.exports = app;
+module.exports = {app,db};
+
 
 
 // starting server
-app.listen(5000, ()=>{
-  console.log("Server running");
-});
+// app.listen(5000, ()=>{
+//   console.log("Server running");
+// });
