@@ -96,3 +96,24 @@ describe("Sweets CRUD Test Suite", () => {
     });
 
 });
+
+describe("Inventory APIs", () => {
+
+  it("should purchase sweet", async () => {
+    const res = await request(app)
+      .post("/api/sweets/1/purchase")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("should restock sweet (admin)", async () => {
+    const res = await request(app)
+      .post("/api/sweets/1/restock")
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({ amount: 10 });
+
+    expect(res.statusCode).toBe(200);
+  });
+
+});
