@@ -1,5 +1,12 @@
 const request = require("supertest");
-const app = require("../server");
+const {app,db} = require("../server");
+
+beforeAll(async () => {
+  // Clear users table to avoid "email already exists"
+  await new Promise(resolve => {
+    db.query("DELETE FROM users", resolve);
+  });
+});
 
 describe("Auth APIs", () => {
 
