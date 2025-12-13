@@ -66,3 +66,31 @@ app.post("/api/auth/login", (req, res) => {
 
 module.exports = app;
 app.listen(5000, () => console.log("Server running"));
+// AUTH MIDDLEWARE
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Token missing" });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+
+    req.user = user;
+    next();
+  });
+};
+
+// SWEETS CRUD
+app.post("/api/sweets", authenticate, (req, res) => {
+  const { name, category, price, quantity } = req.body;
+
+  db.query(
+    "INSERT INTO sweets (name, category, price, quantity) VALUES (?, ?, ?, ?)",
+    [name, category, price, quantity],
+    () => res.status(201).json({ message: "Sweet added" })
+  );
+});
+
+app.get("/api/sweets", authenticate, (req, res) => {
+  db.query("SELECT * FROM sweets", (err, rows) => res.json(rows));
+});
+
