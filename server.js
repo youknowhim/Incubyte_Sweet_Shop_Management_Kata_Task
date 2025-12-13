@@ -81,20 +81,111 @@ const authenticate = (req, res, next) => {
   });
 };
 
-// SWEETS CRUD APIs
+// SWEETS CRUD APIs AND SEARCH FUNCTIONALITY
 
-// ADD SWEEETS
-app.post("/api/sweets", authenticate, (req, res) => {
-  const { name, category, price, quantity } = req.body;
 
-  db.query(
-    "INSERT INTO sweets (name, category, price, quantity) VALUES (?, ?, ?, ?)",
-    [name, category, price, quantity],
-    () => res.status(201).json({ message: "Sweet added" })
-  );
-});
-// GET ALL SWEETS
-app.get("/api/sweets", authenticate, (req, res) => {
-  db.query("SELECT * FROM sweets", (err, rows) => res.json(rows));
-});
+// adding a sweet (user can add)
+app.post("/api/sweets", auth, (req,res)=>{
+
+    const {name,category,price,quantity} = req.body;
+    if(!name || !category || !price || !quantity){
+        return res.status(400).json({msg:"missing fields"});
+    }
+
+    const q = "INSERT INTO sweets(name,category,price,quantity) VALUES(?,?,?,?)"
+
+    db.query(q,[name,category,price,quantity],(err)=>{
+        if(err){
+            console.log("insert err:", err);
+            return res.status(500).json({msg:"db error"});
+        }
+        res.status(201).json({msg:"sweet added"});
+    })
+})
+
+
+
+// get all sweets
+app.get("/api/sweets", auth, (req,res)=>{
+
+    db.query("SELECT * FROM sweets", (err,rows)=>{
+        if(err){
+            return res.status(500).json({msg:"db error"});
+        }
+        res.json(rows);
+    });
+})
+
+
+
+// search sweets by queries
+app.get("/api/sweets/search", auth, (req,res)=>{
+
+    const {name,category,minPrice,maxPrice} = req.query;
+    let sql = "SELECT * FROM sweets WHERE 1=1";
+    let arr = [];
+
+    if(name){
+        sql += " AND name LIKE ?";
+        arr.push(`%${name}%`);
+    }
+    if(category){
+        sql += " AND category LIKE ?";
+        arr.push(`%${category}%`);
+    }
+    if(minPrice){
+        sql += " AND price >= ?";
+        arr.push(minPrice);
+    }
+    if(maxPrice){
+        sql += " AND price <= ?";
+        arr.push(maxPrice);
+    }
+
+    db.query(sql,arr,(err,rows)=>{
+        if(err){
+            return res.status(500).json({msg:"db error"});
+        }
+        res.json(rows);
+    })
+})
+
+
+
+// update a sweet
+app.put("/api/sweets/:id", auth, (req,res)=>{
+
+    const id = req.params.id;
+    const {name,category,price,quantity} = req.body;
+
+    if(!name || !category || !price || !quantity){
+        return res.status(400).json({msg:"missing fields"});
+    }
+
+    const q = "UPDATE sweets SET name=?,category=?,price=?,quantity=? WHERE id=?";
+
+    db.query(q,[name,category,price,quantity,id],(err)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({msg:"db error"});
+        }
+        res.json({msg:"updated"});
+    })
+})
+
+
+
+// delete sweet (admin only)
+app.delete("/api/sweets/:id", auth, checkAdmin, (req,res)=>{
+
+    const id = req.params.id;
+
+    db.query("DELETE FROM sweets WHERE id=?", [id], (err)=>{
+        if(err){
+            return res.status(500).json({msg:"db error"});
+        }
+        res.json({msg:"deleted"});
+    })
+})
+
 
