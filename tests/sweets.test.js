@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../server");
+const {app,db} = require("../server");
 
 let userToken = "";
 let adminToken = "";
