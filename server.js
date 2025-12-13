@@ -54,10 +54,16 @@ const isAdmin = (req,res,next)=>{
 //APIs
 
 // register
+// register
 app.post("/api/auth/register", async (req,res)=>{
-  const {name,email,password,role} = req.body;
+  const {name,email,password,role,isTestUser} = req.body;
 
   db.query("SELECT * FROM users WHERE email=?", [email], async (err,rows)=>{
+    if(err){
+      console.log(err);
+      return res.status(500).json({message:"db error"});
+    }
+
     if(rows && rows.length>0){
       return res.status(400).json({message:"Email already exists"});
     }
@@ -65,18 +71,19 @@ app.post("/api/auth/register", async (req,res)=>{
     const hashed = await bcrypt.hash(password,10);
 
     db.query(
-      "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)",
-      [name,email,hashed, role || "user"],
+      "INSERT INTO users (name,email,password,role,isTestUser) VALUES (?,?,?,?,?)",
+      [name,email,hashed,role || "user", isTestUser || false],
       (err2)=>{
         if(err2){
           console.log(err2);
           return res.status(500).json({message:"db error"});
         }
-        res.status(201).json({message:"User registered"});
+        return res.status(201).json({message:"User registered"});
       }
     );
   });
 });
+
 
 
 // login
@@ -256,7 +263,9 @@ module.exports = {app,db};
 
 
 
-// starting server
-// app.listen(5000, ()=>{
-//   console.log("Server running");
-// });
+// if (process.env.NODE_ENV !== "test") {
+  app.listen(5000, () => {
+    console.log("Server running on http://localhost:5000");
+  });
+// }
+

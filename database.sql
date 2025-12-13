@@ -8,6 +8,7 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE,
   password VARCHAR(255),
   role ENUM('user', 'admin') DEFAULT 'user'
+  isTestUser BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE sweets (
