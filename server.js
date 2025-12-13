@@ -86,14 +86,12 @@ const authenticate = (req, res, next) => {
 
 // adding a sweet (user can add)
 app.post("/api/sweets", auth, (req,res)=>{
-
     const {name,category,price,quantity} = req.body;
+    
     if(!name || !category || !price || !quantity){
         return res.status(400).json({msg:"missing fields"});
     }
-
     const q = "INSERT INTO sweets(name,category,price,quantity) VALUES(?,?,?,?)"
-
     db.query(q,[name,category,price,quantity],(err)=>{
         if(err){
             console.log("insert err:", err);
@@ -107,7 +105,6 @@ app.post("/api/sweets", auth, (req,res)=>{
 
 // get all sweets
 app.get("/api/sweets", auth, (req,res)=>{
-
     db.query("SELECT * FROM sweets", (err,rows)=>{
         if(err){
             return res.status(500).json({msg:"db error"});
@@ -120,7 +117,6 @@ app.get("/api/sweets", auth, (req,res)=>{
 
 // search sweets by queries
 app.get("/api/sweets/search", auth, (req,res)=>{
-
     const {name,category,minPrice,maxPrice} = req.query;
     let sql = "SELECT * FROM sweets WHERE 1=1";
     let arr = [];
@@ -154,16 +150,12 @@ app.get("/api/sweets/search", auth, (req,res)=>{
 
 // update a sweet
 app.put("/api/sweets/:id", auth, (req,res)=>{
-
     const id = req.params.id;
     const {name,category,price,quantity} = req.body;
-
     if(!name || !category || !price || !quantity){
         return res.status(400).json({msg:"missing fields"});
     }
-
     const q = "UPDATE sweets SET name=?,category=?,price=?,quantity=? WHERE id=?";
-
     db.query(q,[name,category,price,quantity,id],(err)=>{
         if(err){
             console.log(err);
@@ -177,9 +169,7 @@ app.put("/api/sweets/:id", auth, (req,res)=>{
 
 // delete sweet (admin only)
 app.delete("/api/sweets/:id", auth, checkAdmin, (req,res)=>{
-
     const id = req.params.id;
-
     db.query("DELETE FROM sweets WHERE id=?", [id], (err)=>{
         if(err){
             return res.status(500).json({msg:"db error"});
