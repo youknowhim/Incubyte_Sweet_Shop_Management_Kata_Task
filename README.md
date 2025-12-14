@@ -111,9 +111,9 @@ The project focuses on:
 
 ### 🔹 Frontend and Backend setup
 
-🔹 Frontend Setup
-Install dependencies:
+
 ```bash
+🔹 backend setup Install dependencies and start backend
 cd backend
 npm install
 Create a .env file using .env.example:
@@ -129,9 +129,11 @@ DB_NAME=sweet_shop
 JWT_SECRET=your_secret
 Start the backend server:
 
+
+
 bash
 Copy code
-npm start
+node server.js
 ➡ Backend runs on: http://localhost:5000
 
 🔹 Frontend Setup
