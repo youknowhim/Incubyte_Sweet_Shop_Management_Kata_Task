@@ -109,13 +109,15 @@ The project focuses on:
 
 ## ⚙️ LOCAL SETUP INSTRUCTIONS
 
-### 🔹 Backend Setup
+### 🔹 Frontend and Backend setup
 
+🔹 Frontend Setup
 Install dependencies:
 ```bash
 cd backend
 npm install
 Create a .env file using .env.example:
+Configure database credentials and JWT secret in the .env file.
 
 env
 Copy code
