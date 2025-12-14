@@ -16,7 +16,7 @@ export default function EditSweet() {
 
   // Load existing sweet
   useEffect(() => {
-    fetch("http://localhost:5000/api/sweets", {
+    fetch("/api/sweets", {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -31,7 +31,7 @@ export default function EditSweet() {
   const submit = async (e) => {
     e.preventDefault();
 
-    await fetch(`http://localhost:5000/api/sweets/${id}`, {
+    await fetch(`/api/sweets/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

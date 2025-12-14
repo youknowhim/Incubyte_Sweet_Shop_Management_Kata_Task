@@ -17,7 +17,7 @@ export default function RestockSweet() {
       return;
     }
 
-    await fetch(`http://localhost:5000/api/sweets/${id}/restock`, {
+    await fetch(`/api/sweets/${id}/restock`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

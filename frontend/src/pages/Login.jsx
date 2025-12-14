@@ -1,14 +1,16 @@
 import "../styles/auth.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // ✅ must be here
 
   const submit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
@@ -23,7 +25,7 @@ export default function Login() {
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
 
-    window.location.href = "/dashboard";
+    navigate("/dashboard");
   };
 
   return (
@@ -39,12 +41,21 @@ export default function Login() {
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, password: e.target.value })
+          }
         />
 
         {error && <p className="error">{error}</p>}
 
-        <button>Login</button>
+        <button type="submit">Login</button>
+
+        <button
+          type="button"
+          onClick={() => navigate("/register")}
+        >
+          New user? Register
+        </button>
       </form>
     </div>
   );

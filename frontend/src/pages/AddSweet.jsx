@@ -27,7 +27,7 @@ export default function AddSweet() {
       return;
     }
 
-    await fetch("http://localhost:5000/api/sweets", {
+    await fetch("/api/sweets", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
