@@ -10,6 +10,9 @@ it("renders dashboard heading", () => {
     <Dashboard />
     </MemoryRouter>);
   expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
-  expect(screen.getByPlaceholderText(/search sweets/i)).toBeInTheDocument();
+  expect(
+  screen.getByPlaceholderText(/search by name or category/i)
+  ).toBeInTheDocument();
+
 
 });
