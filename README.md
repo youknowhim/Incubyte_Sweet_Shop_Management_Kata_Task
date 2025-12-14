@@ -111,6 +111,7 @@ The project focuses on:
 
 ### 🔹 Backend Setup
 
+Install dependencies:
 ```bash
 cd backend
 npm install
@@ -131,8 +132,10 @@ Copy code
 npm start
 ➡ Backend runs on: http://localhost:5000
 
-### 🔹 Frontend Setup
-```bash
+🔹 Frontend Setup
+Install dependencies and start frontend:
+
+bash
 Copy code
 cd frontend
 npm install
@@ -145,7 +148,9 @@ Written using Jest and Supertest
 
 Covers authentication, sweets APIs, and authorization logic
 
-```bash
+Run backend tests:
+
+bash
 Copy code
 cd backend
 npm test
@@ -153,6 +158,8 @@ npm test
 Written using Vitest and React Testing Library
 
 Covers login, register, dashboard, protected routes, and admin routes
+
+Run frontend tests:
 
 bash
 Copy code
