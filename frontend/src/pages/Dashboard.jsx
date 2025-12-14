@@ -6,13 +6,15 @@ export default function Dashboard() {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   const [sweets, setSweets] = useState([]);
   const [searchText, setSearchText] = useState("");
 
   // Load all sweets
   const loadSweets = async () => {
-    const res = await fetch("http://localhost:5000/api/sweets", {
+    const res = await fetch("/api/sweets", {
       headers: { Authorization: `Bearer ${token}` }
     });
     setSweets(await res.json());
@@ -23,28 +25,41 @@ export default function Dashboard() {
   }, []);
 
   // Google-like search
-  const searchSweets = async () => {
-    if (!searchText.trim()) {
-      loadSweets();
-      return;
+const searchSweets = async () => {
+  const params = new URLSearchParams();
+
+  if (searchText.trim()) {
+    params.append("q", searchText);
+  }
+
+  if (minPrice) {
+    params.append("minPrice", minPrice);
+  }
+
+  if (maxPrice) {
+    params.append("maxPrice", maxPrice);
+  }
+
+  // If nothing selected → load all
+  if ([searchText, minPrice, maxPrice].every(v => !v)) {
+    loadSweets();
+    return;
+  }
+
+  const res = await fetch(
+    `/api/sweets/search?${params.toString()}`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
     }
+  );
 
-    const params = new URLSearchParams();
-    params.append("name", searchText);
-    params.append("category", searchText);
+  setSweets(await res.json());
+};
 
-    const res = await fetch(
-      `http://localhost:5000/api/sweets/search?${params.toString()}`,
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
 
-    setSweets(await res.json());
-  };
 
   const purchaseSweet = async (id) => {
-    await fetch(`http://localhost:5000/api/sweets/${id}/purchase`, {
+    await fetch(`/api/sweets/${id}/purchase`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -52,7 +67,7 @@ export default function Dashboard() {
   };
 
   const deleteSweet = async (id) => {
-    await fetch(`http://localhost:5000/api/sweets/${id}`, {
+    await fetch(`/api/sweets/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -82,17 +97,31 @@ export default function Dashboard() {
       </header>
 
       {/* SEARCH BAR (INLINE, GOOGLE-LIKE) */}
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search sweets by name or category..."
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        <button onClick={searchSweets}>
-          Search
-        </button>
-      </div>
+<div className="search-bar">
+  <input
+    type="text"
+    placeholder="Search by name or category..."
+    value={searchText}
+    onChange={(e) => setSearchText(e.target.value)}
+  />
+
+  <input
+    type="number"
+    placeholder="Min ₹"
+    value={minPrice}
+    onChange={(e) => setMinPrice(e.target.value)}
+  />
+
+  <input
+    type="number"
+    placeholder="Max ₹"
+    value={maxPrice}
+    onChange={(e) => setMaxPrice(e.target.value)}
+  />
+
+  <button onClick={searchSweets}>Search</button>
+</div>
+
 
       {/* SWEETS GRID */}
       <div className="grid">
