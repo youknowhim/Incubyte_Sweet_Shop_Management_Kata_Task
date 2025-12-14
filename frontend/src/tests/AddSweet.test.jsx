@@ -12,4 +12,6 @@ test("renders add sweet form", () => {
   expect(screen.getByText(/add sweet/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/name/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/category/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/price/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/quantity/i)).toBeInTheDocument();
 });
