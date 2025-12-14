@@ -27,6 +27,12 @@ header {
 }
 
 .danger {
-  background: #dc2626;
+  background-color: #dc2626;   /* red */
   color: white;
+  font-weight: 600;
 }
+
+.danger:hover {
+  background-color: #b91c1c;
+}
+
