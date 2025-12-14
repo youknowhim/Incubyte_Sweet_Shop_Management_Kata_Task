@@ -196,7 +196,6 @@ Copy code
 │   ├── .env.example
 │   ├── database.sql
 │   ├── server.js
-│   ├── start.js
 │   ├── package.json
 │   └── package-lock.json
 │
