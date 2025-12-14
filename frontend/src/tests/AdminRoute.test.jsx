@@ -1,8 +1,9 @@
+import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import AdminRoute from "../AdminRoute";
+import AdminRoute from "../routes/AdminRoute";
 
-test("blocks non-admin users", () => {
+it("blocks non-admin users", () => {
   localStorage.setItem("token", "fake");
   localStorage.setItem("role", "user");
 

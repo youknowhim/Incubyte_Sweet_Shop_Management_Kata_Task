@@ -1,9 +1,14 @@
+import { test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Dashboard from "../pages/Dashboard";
+import { MemoryRouter } from "react-router-dom";
 
-test("renders dashboard heading", () => {
+it("renders dashboard heading", () => {
   localStorage.setItem("token", "fake");
-  render(<Dashboard />);
+  render(
+  <MemoryRouter>
+    <Dashboard />
+    </MemoryRouter>);
   expect(screen.getByText(/dashboard/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/search sweets/i)).toBeInTheDocument();
 

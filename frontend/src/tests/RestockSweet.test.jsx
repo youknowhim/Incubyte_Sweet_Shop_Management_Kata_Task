@@ -1,3 +1,4 @@
+import { test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import RestockSweet from "../pages/RestockSweet";
@@ -7,7 +8,7 @@ beforeEach(() => {
   localStorage.setItem("role", "admin");
 });
 
-test("renders restock form for admin", () => {
+it("renders restock form for admin", () => {
   render(
     <MemoryRouter initialEntries={["/restock/1"]}>
       <Routes>
