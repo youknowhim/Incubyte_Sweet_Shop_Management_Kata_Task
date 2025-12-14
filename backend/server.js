@@ -155,34 +155,33 @@ app.get("/api/sweets", auth, (req,res)=>{
 
 
 // search sweets
-app.get("/api/sweets/search", auth, (req,res)=>{
+app.get("/api/sweets/search", auth, (req, res) => {
+  const { q, minPrice, maxPrice } = req.query;
 
-  const {name,category,minPrice,maxPrice} = req.query;
   let sql = "SELECT * FROM sweets WHERE 1=1";
-  let arr = [];
+  let params = [];
 
-  if(name){
-    sql += " AND name LIKE ?";
-    arr.push("%"+name+"%");
+  if (q) {
+    sql += " AND (name LIKE ? OR category LIKE ?)";
+    params.push(`%${q}%`, `%${q}%`);
   }
-  if(category){
-    sql += " AND category LIKE ?";
-    arr.push("%"+category+"%");
-  }
-  if(minPrice){
+
+  if (minPrice) {
     sql += " AND price >= ?";
-    arr.push(minPrice);
-  }
-  if(maxPrice){
-    sql += " AND price <= ?";
-    arr.push(maxPrice);
+    params.push(minPrice);
   }
 
-  db.query(sql,arr,(err,rows)=>{
-    if(err) return res.status(500).json({msg:"db error"});
+  if (maxPrice) {
+    sql += " AND price <= ?";
+    params.push(maxPrice);
+  }
+
+  db.query(sql, params, (err, rows) => {
+    if (err) return res.status(500).json({ msg: "db error" });
     res.json(rows);
   });
 });
+
 
 
 // update sweet
