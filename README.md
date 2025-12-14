@@ -1,5 +1,6 @@
-🍬🍭 SWEET SHOP MANAGEMENT SYSTEM
-📸📸 APPLICATION SCREENSHOTS
+# 🍬🍭 SWEET SHOP MANAGEMENT SYSTEM
+
+## 📸📸 APPLICATION SCREENSHOTS
 
 Below are screenshots of the **final working application**, including UI, features, and test execution.
 
@@ -39,142 +40,137 @@ Below are screenshots of the **final working application**, including UI, featur
 ### 🧪 Frontend Test Results
 ![Frontend Tests](./screenshots/frontendtest.png)
 
+---
 
-🧠 PROJECT OVERVIEW
+## 🧠 PROJECT OVERVIEW
 
-The Sweet Shop Management System is a full-stack web application developed as part of the
-Incubyte Kata Task.
+The **Sweet Shop Management System** is a full-stack web application developed as part of the  
+**Incubyte Kata Task**.
 
 The system allows:
-
-Users to browse, search, and purchase sweets
-
-Admins to manage inventory, pricing, stock, and availability
+- **Users** to browse, search, and purchase sweets
+- **Admins** to manage inventory, pricing, stock, and availability
 
 The project focuses on:
+- Clean backend API design
+- Secure authentication & authorization
+- Role-based access control
+- Automated testing (backend & frontend)
 
-Clean backend API design
+---
 
-Secure authentication and authorization
+## ✨ CORE FEATURES
 
-Role-based access control
+### 🔐 Authentication & Authorization
+- User registration and login
+- JWT-based authentication
+- Role-based access control (Admin / User)
 
-Automated testing for both backend and frontend
+### 🍭 Sweet Inventory Management
+- View available sweets
+- Purchase sweets (quantity updates automatically)
+- Admin-only operations:
+  - Add sweets
+  - Edit sweets
+  - Restock sweets
+  - Delete sweets
 
-✨ CORE FEATURES
-🔐 Authentication & Authorization
+### 🔍 Search & Filtering
+- Search sweets by **name OR category**
+- Filter sweets by **price range**
+- Combined search + price filtering
 
-User registration and login
+### 🧪 Automated Testing
+- Backend API tests
+- Frontend component and route tests
 
-JWT-based authentication
+---
 
-Role-based access control (Admin / User)
+## 🛠️ TECHNOLOGY STACK
 
-🍭 Sweet Inventory Management
+### 🖥️ Frontend
+- React
+- Vite
+- CSS
 
-View available sweets
+### ⚙️ Backend
+- Node.js
+- Express.js
+- MySQL
+- JWT Authentication
 
-Purchase sweets with automatic quantity updates
+### 🧪 Testing
+- Jest
+- Supertest
+- Vitest
+- React Testing Library
 
-Admin-only operations:
+---
 
-Add sweets
+## ⚙️ LOCAL SETUP INSTRUCTIONS
 
-Edit sweets
+### 🔹 Backend Setup
 
-Restock sweets
+Install dependencies:
+```bash
+cd backend
+npm install
+Create a .env file using .env.example:
 
-Delete sweets
+env
+Copy code
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=sweet_shop
+JWT_SECRET=your_secret
+Start the backend server:
 
-🔍 Search & Filtering
-
-Search sweets by name or category
-
-Filter sweets by price range
-
-Combined search and price filtering
-
-🧪 Automated Testing
-
-Backend API tests
-
-Frontend component and route tests
-
-🛠️ TECHNOLOGY STACK
-🖥️ Frontend
-
-React
-
-Vite
-
-CSS
-
-⚙️ Backend
-
-Node.js
-
-Express.js
-
-MySQL
-
-JWT Authentication
-
-🧪 Testing
-
-Jest
-
-Supertest
-
-Vitest
-
-React Testing Library
-
-⚙️ LOCAL SETUP INSTRUCTIONS
-🔹 Backend Setup
-
-Navigate to the backend folder
-
-Install dependencies
-
-Create a .env file using .env.example
-
-Configure database and JWT details
-
-Start the backend server
-
-The backend runs on http://localhost:5000
+bash
+Copy code
+npm start
+➡ Backend runs on: http://localhost:5000
 
 🔹 Frontend Setup
+Install dependencies and start frontend:
 
-Navigate to the frontend folder
-
-Install dependencies
-
-Start the development server
-
-The frontend runs on http://localhost:5173
+bash
+Copy code
+cd frontend
+npm install
+npm run dev
+➡ Frontend runs on: http://localhost:5173
 
 🧪 TEST REPORT
 ✅ Backend Tests
-
 Written using Jest and Supertest
 
 Covers authentication, sweets APIs, and authorization logic
 
-✅ Frontend Tests
+Run backend tests:
 
+bash
+Copy code
+cd backend
+npm test
+✅ Frontend Tests
 Written using Vitest and React Testing Library
 
 Covers login, register, dashboard, protected routes, and admin routes
 
-All tests pass successfully, as shown in the screenshots above.
+Run frontend tests:
+
+bash
+Copy code
+cd frontend
+npm run test
+✔ All tests pass successfully.
 
 🤖 MY AI USAGE (MANDATORY DISCLOSURE)
-
 AI tools (ChatGPT) were used responsibly and transparently during the development of this project.
 
 How AI was used:
-
 Generating backend and frontend test code, as automated testing was new to me
 
 Understanding testing patterns, assertions, and mocking strategies
@@ -186,18 +182,21 @@ Helping with SQL query design and search/filter logic
 Improving code structure, readability, and documentation
 
 Ownership & Learning:
-
 All AI-generated code was carefully reviewed, modified, and fully understood
 
 Final implementations, integrations, and architectural decisions were made by me
 
 AI was used strictly as a learning assistant, not as a replacement for understanding
 
+📁 PROJECT STRUCTURE
+text
+Copy code
 ├── backend/
 │   ├── tests/
 │   ├── .env.example
 │   ├── database.sql
 │   ├── server.js
+│   ├── start.js
 │   ├── package.json
 │   └── package-lock.json
 │
@@ -221,10 +220,7 @@ AI was used strictly as a learning assistant, not as a replacement for understan
 │   └── frontendtest.png
 │
 ├── README.md
-
-
 🌱 KEY LEARNINGS
-
 Practical experience with full-stack application development
 
 Hands-on learning of automated testing
@@ -236,5 +232,4 @@ Clean API design and SQL filtering logic
 Improved understanding of React routing and state management
 
 👤 AUTHOR
-
 Pallav Rai
