@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Register from "../Register";
+import Register from "../pages/Register";
 
 test("renders register form", () => {
   render(<Register />);
