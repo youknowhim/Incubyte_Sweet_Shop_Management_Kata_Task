@@ -131,8 +131,8 @@ Copy code
 npm start
 ➡ Backend runs on: http://localhost:5000
 
-🔹 Frontend Setup
-bash
+### 🔹 Frontend Setup
+```bash
 Copy code
 cd frontend
 npm install
@@ -145,7 +145,7 @@ Written using Jest and Supertest
 
 Covers authentication, sweets APIs, and authorization logic
 
-bash
+```bash
 Copy code
 cd backend
 npm test
