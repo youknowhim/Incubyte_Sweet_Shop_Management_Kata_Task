@@ -11,7 +11,7 @@ Below are screenshots of the **final working application**, including UI, featur
 
 ---
 
-### ➕ Add Sweet (Admin Feature)
+### ➕ Add Sweet
 ![Add Sweet](./screenshots/addsweet.png)
 
 ---
